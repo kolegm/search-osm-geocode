@@ -66,8 +66,6 @@ Searcher.prototype.reverseGeocode = function (lat, lng, callback, options) {
  * @access protected
  */
 Searcher.prototype._send = function (callback) {
-console.log(this._getUri() + this._getMethod());
-console.log(this._getOptions());
   try {
     request({
       uri: this._getUri() + this._getMethod(),
