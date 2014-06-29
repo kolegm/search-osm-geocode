@@ -1,0 +1,11 @@
+{
+  "uri": "http://nominatim.openstreetmap.org",
+  "search": "/search",
+  "reverse": "/reverse",
+  "options": {
+    "format": "json",
+    "accept-language": "en,uk",
+    "addressdetails": 1,
+    "limit": 10
+  }
+}
