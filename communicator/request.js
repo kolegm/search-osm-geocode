@@ -174,13 +174,6 @@ Searcher.prototype._useOptions = function (options) {
  */
 Searcher.prototype._initDefaultOptions = function () {
   this.defaultOptions = _.extend(
-    /**
-     * The 'sensor' Parameter
-     * The Google Maps API previously required that you include the sensor parameter to indicate 
-     * whether your application used a sensor to determine the user's location.
-     * This parameter is no longer required.
-     */
-    //{ sensor: false},
     {},
     config['options'] || {}
   );
