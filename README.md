@@ -2,15 +2,17 @@
 
 ### General
 Node.js module for geocoding and reverse geocoding.  
-[**Uses service Open Street map geocoding API (Nominatim tool).**](http://wiki.openstreetmap.org/wiki/Nominatim)
+[**Uses service Open Street map geocoding API (Nominatim tool).**](http://wiki.openstreetmap.org/wiki/Nominatim).
 
-[Geocoding](https://developers.google.com/maps/documentation/geocoding/#Geocoding) is the process of matching address with geographic coordinates.  
-[Reverse Geocoding](https://developers.google.com/maps/documentation/geocoding/#ReverseGeocoding) is the process of matching geographic coordinates with address.
+Geocoding is the process of matching address with geographic coordinates.  
+Reverse Geocoding is the process of matching geographic coordinates with address.
 
-[*Address geocoding.*](http://wiki.openstreetmap.org/wiki/Nominatim#Search) Provide an address or location and receive potential OSM geocodes.  
-[*Reverse geocoding.*](http://wiki.openstreetmap.org/wiki/Nominatim#ReverseSearch) Provide latitude and longitude coordinates and receive the known address information for that location.
+[*Address geocoding.*](http://wiki.openstreetmap.org/wiki/Nominatim#Search).  
+Provide an address or location and receive potential OSM geocodes.  
+[*Reverse geocoding.*](http://wiki.openstreetmap.org/wiki/Nominatim#ReverseSearch).  
+Provide latitude and longitude coordinates and receive the known address information for that location.
 
-[Usage Limits](http://wiki.openstreetmap.org/wiki/Nominatim_usage_policy)
+[Usage Limits](http://wiki.openstreetmap.org/wiki/Nominatim_usage_policy).
 
 ### Installation
 >npm install search-osm-geocode [-S]

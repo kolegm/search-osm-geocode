@@ -20,21 +20,23 @@ function Searcher() {
  * @access public
  */
 Searcher.prototype.geocode = function (address, callback, options) {
-  address = (address).toString();
+  address = this._parseAddress(address);
+
   if (!address.length) {
     return callback(
-      new CommunicationError("Address parameter is mandatory.")
+      new CommunicationError(util.format(
+        'Address parameter is mandatory. Input value is \'%s\'',
+        address
+      ))
     );
   }
-  
+
+  options = _.extend({}, (options || {}));
+  options = _.extend(options, { address: address});
+  this._useOptions(options);
+
   this._useExternalMethod('search');
 
-  options = _.extend(
-    { q: address},
-    (options || {})
-  );
-  this._useOptions(options);
-  
   this._send(callback);
 };
 
@@ -42,22 +44,24 @@ Searcher.prototype.geocode = function (address, callback, options) {
  * @access public
  */
 Searcher.prototype.reverseGeocode = function (lat, lng, callback, options) {
-  lat = parseFloat(lat);
-  lng = parseFloat(lng);
-  
+  lat = this._parseCoordinate(lat);
+  lng = this._parseCoordinate(lng);
+
   if (!lat || !lng) {
     return callback(
-      new CommunicationError("Geographical coordinates are mandatory.")
+      new CommunicationError(util.format(
+        'Geographical coordinates are mandatory. Input values: latitude is \'%s\', longitude is \'%s\'',
+        lat,
+        lng
+      ))
     );
   }
 
-  this._useExternalMethod('reverse');
-
-  options = _.extend(
-    { lat: lat, lon: lng },
-    (options || {})
-  );
+  options = _.extend({}, (options || {}));
+  options = _.extend(options, { lat: lat, lon: lng });
   this._useOptions(options);
+
+  this._useExternalMethod('reverse');
 
   this._send(callback);
 };
@@ -73,10 +77,16 @@ Searcher.prototype._send = function (callback) {
     }, function (error, response, body) {
       if (error) {
         return callback(error);
+      } else if(response.statusCode != 200) {
+        error = new CommunicationError(util.format(
+          'Response status code is \'%s\'',
+          response.statusCode
+        ));
+        callback(error);
       } else {
         callback(null, JSON.parse(body));
       }
-    });
+    }).end();
   } catch (error) {
     return callback(error);
   }
@@ -91,7 +101,7 @@ Searcher.prototype._getUri = function () {
   }
 
   this._checkUriWithError();
-  
+
   return this.uri;
 }
 
@@ -125,7 +135,7 @@ Searcher.prototype._checkUriWithError = function () {
 Searcher.prototype._useExternalMethod = function (methodName) {
   methodName = (methodName).toString();
   method = config[methodName];
-  
+
   if (!method) {
     throw new CommunicationError(util.format(
       'Method mapping %sis incorrect.',
@@ -165,7 +175,7 @@ Searcher.prototype._checkMethodWithError = function () {
  * @access protected
  */
 Searcher.prototype._useOptions = function (options) {
-  this.options = _.extend({}, this.defaultOptions);
+  this.options = _.extend({}, this._defaultOptions);
   _.extend(this.options, (options || {}));
 }
 
@@ -173,7 +183,7 @@ Searcher.prototype._useOptions = function (options) {
  * @access protected
  */
 Searcher.prototype._initDefaultOptions = function () {
-  this.defaultOptions = _.extend(
+  this._defaultOptions = _.extend(
     {},
     config['options'] || {}
   );
@@ -186,4 +196,29 @@ Searcher.prototype._getOptions = function () {
   return this.options;
 }
 
-module.exports = new Searcher();
+/**
+ * @access protected
+ */
+Searcher.prototype._parseAddress = function (str) {
+  str = _.isEmpty(str)
+    ? EMPTY_ADDRESS_VALUE
+    : (str).toString();
+
+  return str;
+};
+
+/**
+ * @access protected
+ */
+Searcher.prototype._parseCoordinate = function (crd) {
+  if (crd) {
+    crd = parseFloat((crd).toString().replace(',','.'));
+  }
+  if (!_.isNumber(crd)) {
+    crd = EMPTY_COORDINATE_VALUE;
+  }
+
+  return crd;
+};
+
+module.exports = Searcher;
