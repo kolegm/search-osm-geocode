@@ -32,7 +32,7 @@ Searcher.prototype.geocode = function (address, callback, options) {
   }
 
   options = _.extend({}, (options || {}));
-  options = _.extend(options, { address: address});
+  options = _.extend(options, { q: address});
   this._useOptions(options);
 
   this._useExternalMethod('search');
