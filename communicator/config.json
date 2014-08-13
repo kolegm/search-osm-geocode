@@ -4,7 +4,7 @@
   "reverse": "/reverse",
   "options": {
     "format": "json",
-    "accept-language": "en,uk",
+    "accept-language": "en",
     "addressdetails": 1,
     "limit": 10
   }
