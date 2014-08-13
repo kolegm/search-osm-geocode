@@ -3,7 +3,7 @@
   "search": "/search",
   "reverse": "/reverse",
   "options": {
-    "format": "json",
+    "format": "jsonv2",
     "accept-language": "en",
     "addressdetails": 1,
     "limit": 10
