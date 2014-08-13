@@ -23,7 +23,7 @@ Searcher.prototype.geocode = function (address, callback, options) {
   address = this._parseAddress(address);
 
   if (!address.length) {
-    return callback(
+    callback(
       new CommunicationError(util.format(
         'Address parameter is mandatory. Input value is \'%s\'',
         address
@@ -48,7 +48,7 @@ Searcher.prototype.reverseGeocode = function (lat, lng, callback, options) {
   lng = this._parseCoordinate(lng);
 
   if (!lat || !lng) {
-    return callback(
+    callback(
       new CommunicationError(util.format(
         'Geographical coordinates are mandatory. Input values: latitude is \'%s\', longitude is \'%s\'',
         lat,
@@ -76,7 +76,7 @@ Searcher.prototype._send = function (callback) {
       qs: this._getOptions()
     }, function (error, response, body) {
       if (error) {
-        return callback(error);
+        callback(error);
       } else if(response.statusCode != 200) {
         error = new CommunicationError(util.format(
           'Response status code is \'%s\'',
@@ -88,7 +88,7 @@ Searcher.prototype._send = function (callback) {
       }
     }).end();
   } catch (error) {
-    return callback(error);
+    callback(error);
   }
 }
 
