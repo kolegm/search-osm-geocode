@@ -28,7 +28,7 @@ const LATITUDE = '50.45';
 const LONGITUDE = '30.523';
 const LANGUAGE = 'en';
 
-// you can use Google options to manage result format
+// you can use Open Street Map options to manage result format
 var options = {
   'accept-language': LANGUAGE
 };
