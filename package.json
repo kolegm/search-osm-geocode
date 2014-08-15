@@ -1,6 +1,6 @@
 {
   "name": "search-osm-geocode",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Public search geographical location or address using Open Street Map Geocoding API: [reverse] geocoding.",
   "main": "index.js",
   "scripts": {

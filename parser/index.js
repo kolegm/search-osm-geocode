@@ -49,7 +49,11 @@ function parse (externalHolder) {
 }
 
 function convert (external) {
-  var internal = create();
+  var internal;
+  var tagType;
+  var tagClass;
+
+  internal = create();
 
   if (!_.isEmpty(external)) {
 
@@ -58,85 +62,78 @@ function convert (external) {
     }
 
     if (external.address) {
-      if (external.address.country) {
-        internal.country = external.address.country;
+      var address = external.address;
+
+      if (address.country) {
+        internal.country = address.country;
       }
-      if (external.address.country_code) {
-        internal.countryIso = external.address.country_code;
+      if (address.country_code) {
+        internal.countryIso = address.country_code;
       }
-      if (external.address.postcode) {
-        internal.zipcode = external.address.postcode;
+      if (address.postcode) {
+        internal.zipcode = address.postcode;
       }
-      if (external.address.state) {
-        internal.state = external.address.state;
+      if (address.state) {
+        internal.state = address.state;
       }
-      if (external.address.county) {
-        internal.area = external.address.county;
-      } else if (external.state_district) {
-        internal.area = external.address.state_district;
+      if (address.county) {
+        internal.area = address.county;
+      } else if (address.state_district) {
+        internal.area = address.state_district;
       }
 
-      if (external.address.city) {
-        internal.city = external.address.city;
+      if (address.city) {
+        internal.city = address.city;
       }
-      else if (external.address.town) {
-        internal.city = external.address.town;
+      else if (address.town) {
+        internal.city = address.town;
       }
-      else if (external.address.village) {
-        internal.city = external.address.village;
+      else if (address.village) {
+        internal.city = address.village;
       }
-      else if (external.address.hamlet) {
-        internal.city = external.address.hamlet;
-      }
-
-      if (external.address.city_district) {
-        internal.subcity = external.address.city_district;
+      else if (address.hamlet) {
+        internal.city = address.hamlet;
       }
 
-      if (external.address.suburb) {
-        internal.subcity1 = external.address.suburb;
+      if (address.city_district) {
+        internal.subcity = address.city_district;
       }
 
-      if (external.address.locality) {
-        internal.subcity2 = external.address.locality;
+      if (address.suburb) {
+        internal.subcity1 = address.suburb;
       }
 
-      if (external.address.neighbourhood) {
-        internal.neighborhood = external.address.neighbourhood;
+      if (address.locality) {
+        internal.subcity2 = address.locality;
       }
 
-      if (external.address.road) {
-        internal.streetName = external.address.road;
+      if (address.neighbourhood) {
+        internal.neighborhood = address.neighbourhood;
       }
 
-      if (external.address.house_number) {
-        internal.streetNumber = external.address.house_number;
+      if (address.road) {
+        internal.streetName = address.road;
       }
 
-      if (external.address.address29) {
-        internal.streetAddress = external.address.address29;
+      if (address.house_number) {
+        internal.streetNumber = address.house_number;
       }
 
-      if (external.address.bus_station) {
-        internal.establishment = external.address.bus_station;
-      } else if (external.address.bus_stop) {
-        internal.establishment = external.address.bus_stop;
-      } else if (external.address.marina) {
-        internal.establishment = external.address.marina;
-      } else if (external.address.ferry_terminal) {
-        internal.establishment = external.address.ferry_terminal;
-      } else if (external.address.cafe) {
-        internal.establishment = external.address.cafe;
-      } else if (external.address.restaurant) {
-        internal.establishment = external.address.restaurant;
-      } else if (external.address.parking) {
-        internal.establishment = external.address.parking;
-      } else if (external.address.building) {
-        internal.establishment = external.address.building;
-      } else if (external.address.hairdresser) {
-        internal.establishment = external.address.hairdresser;
-      } else if (external.address.industrial) {
-        internal.establishment = external.address.industrial;
+      if (address.address29) {
+        internal.streetAddress = address.address29;
+      }
+
+      /**
+       * Important for case when address has unknown subelement
+       * and which presents as root tag value
+       */
+      tagType = external.type;
+      tagClass = external.category;
+      if (tagType && address[tagType] && !_.contains(internal, address[tagType])) {
+        internal.establishment = address[tagType];
+      }
+      else if (tagClass && address[tagClass] && !_.contains(internal, address[tagClass])) {
+        internal.establishment = address[tagClass];
       }
     }
 
@@ -148,19 +145,19 @@ function convert (external) {
     }
 
     if (external.boundingbox) {
-      var viewport = external.boundingbox;
+      var bb = external.boundingbox;
 
-      if (viewport[0]) {
-        internal.viewport.leftTop.latitude = viewport[0];
+      if (bb[0]) {
+        internal.viewport.leftTop.latitude = bb[0];
       }
-      if (viewport[1]) {
-        internal.viewport.leftTop.longitude = viewport[1];
+      if (bb[1]) {
+        internal.viewport.leftTop.longitude = bb[1];
       }
-      if (viewport[2]) {
-        internal.viewport.rigthBottom.latitude = viewport[2];
+      if (bb[2]) {
+        internal.viewport.rigthBottom.latitude = bb[2];
       }
-      if (viewport[3]) {
-        internal.viewport.rigthBottom.longitude = viewport[3];
+      if (bb[3]) {
+        internal.viewport.rigthBottom.longitude = bb[3];
       }
     }
 

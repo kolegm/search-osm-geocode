@@ -6,6 +6,7 @@
     "format": "jsonv2",
     "accept-language": "en",
     "addressdetails": 1,
+    "dedupe": 1,
     "limit": 10
   }
 }
