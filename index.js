@@ -1,7 +1,6 @@
 var _ = require('underscore');
 
 var Searcher = require('./communicator/request');
-var Parser = require('./parser');
 
 /**
  * Wrapper - call Open Street Map (OSM) geocoder and parse result
@@ -9,6 +8,7 @@ var Parser = require('./parser');
 function SearchWrapper() {}
 
 SearchWrapper.prototype.extendCallback = function (callback) {
+  var Parser = require('./parser');
   return function (error, data) {
     error = Parser.parseError(error);
     data = Parser.parseData(data);

@@ -4,7 +4,9 @@
 
 var _ = require('underscore');
 
-var model = require('./model.json');
+function create() {
+  return _.extend({}, require('./model.json'));
+}
 
 module.exports.parseError = function (error) {
   if (error && _.isObject(error)) {
@@ -130,10 +132,10 @@ function convert (external) {
       tagType = external.type;
       tagClass = external.category;
       if (tagType && address[tagType] && !_.contains(internal, address[tagType])) {
-        internal.establishment = address[tagType];
+        internal.place = address[tagType];
       }
       else if (tagClass && address[tagClass] && !_.contains(internal, address[tagClass])) {
-        internal.establishment = address[tagClass];
+        internal.place = address[tagClass];
       }
     }
 
@@ -147,25 +149,28 @@ function convert (external) {
     if (external.boundingbox) {
       var bb = external.boundingbox;
 
+      var viewport = {
+        leftTop: { latitude: null, longitude: null },
+        rigthBottom: { latitude: null, longitude: null },
+      }
+
       if (bb[0]) {
-        internal.viewport.leftTop.latitude = bb[0];
+        viewport.leftTop.latitude = bb[0];
       }
       if (bb[1]) {
-        internal.viewport.leftTop.longitude = bb[1];
+        viewport.leftTop.longitude = bb[1];
       }
       if (bb[2]) {
-        internal.viewport.rigthBottom.latitude = bb[2];
+        viewport.rigthBottom.latitude = bb[2];
       }
       if (bb[3]) {
-        internal.viewport.rigthBottom.longitude = bb[3];
+        viewport.rigthBottom.longitude = bb[3];
       }
+
+      internal.viewport = viewport;
     }
 
   }
 
   return internal;
-}
-
-function create() {
-  return _.extend({}, model);
 }
